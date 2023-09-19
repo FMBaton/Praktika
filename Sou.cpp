@@ -1,47 +1,38 @@
 #include <iostream>
-#include <unordered_set>
-#include <vector>
+
+void removeBlock(int* arr, int& size, int startIndex, int blockSize) {
+    if (startIndex < 0 || startIndex >= size || blockSize <= 0) {
+        std::cout << "Invalid start index or block size." << std::endl;
+        return;
+    }
+
+    if (startIndex + blockSize > size)
+        blockSize = size - startIndex;  // Adjust block size if exceeding array size
+
+    for (int i = startIndex; i < size - blockSize; ++i)
+        arr[i] = arr[i + blockSize];
+
+    size -= blockSize;
+}
 
 int main() {
-    int M, N;
-    std::cout << "Enter the size of array A: ";
-    std::cin >> M;
+    const int arrSize = 10;
+    int arr[arrSize] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int newSize = arrSize;
 
-    std::cout << "Enter the size of array B: ";
-    std::cin >> N;
+    std::cout << "Original array: ";
+    for (int i = 0; i < newSize; ++i)
+        std::cout << arr[i] << " ";
+    std::cout << std::endl;
 
-    std::vector<int> A(M);
-    std::vector<int> B(N);
-    std::unordered_set<int> commonElements;
+    int startIndex = 3;  // Starting index of the block to remove
+    int blockSize = 4;   // Number of elements to remove
 
-    std::cout << "Enter elements of array A: ";
-    for (int i = 0; i < M; ++i) {
-        std::cin >> A[i];
-    }
+    removeBlock(arr, newSize, startIndex, blockSize);
 
-    std::cout << "Enter elements of array B: ";
-    for (int i = 0; i < N; ++i) {
-        std::cin >> B[i];
-    }
-
-    // Find common elements and store them in the set
-    for (int i = 0; i < M; ++i) {
-        for (int j = 0; j < N; ++j) {
-            if (A[i] == B[j]) {
-                commonElements.insert(A[i]);
-                break;
-            }
-        }
-    }
-
-    // Convert set to vector for easy printing
-    std::vector<int> C(commonElements.begin(), commonElements.end());
-
-    // Print the common elements
-    std::cout << "Common elements: ";
-    for (int element : C) {
-        std::cout << element << " ";
-    }
+    std::cout << "Array after removing a block: ";
+    for (int i = 0; i < newSize; ++i)
+        std::cout << arr[i] << " ";
     std::cout << std::endl;
 
     return 0;
