@@ -1,0 +1,95 @@
+#include <iostream>
+
+void findUniqueElements(int A[], int M, int B[], int N) {
+    int maxSize = M + N;  // Максимально возможный размер третьего массива
+    int* result = new int[maxSize];
+    int resultSize = 0;
+
+    for (int i = 0; i < M; i++) {
+        bool foundInB = false;
+
+        for (int j = 0; j < N; j++) {
+            if (A[i] == B[j]) {
+                foundInB = true;
+                break;
+            }
+        }
+
+        if (!foundInB) {
+            bool alreadyAdded = false;
+
+            // Проверяем, не добавляли ли мы этот элемент ранее
+            for (int k = 0; k < resultSize; k++) {
+                if (A[i] == result[k]) {
+                    alreadyAdded = true;
+                    break;
+                }
+            }
+
+            if (!alreadyAdded) {
+                result[resultSize] = A[i];
+                resultSize++;
+            }
+        }
+    }
+
+    for (int i = 0; i < N; i++) {
+        bool foundInA = false;
+
+        for (int j = 0; j < M; j++) {
+            if (B[i] == A[j]) {
+                foundInA = true;
+                break;
+            }
+        }
+
+        if (!foundInA) {
+            bool alreadyAdded = false;
+
+            // Проверяем, не добавляли ли мы этот элемент ранее
+            for (int k = 0; k < resultSize; k++) {
+                if (B[i] == result[k]) {
+                    alreadyAdded = true;
+                    break;
+                }
+            }
+
+            if (!alreadyAdded) {
+                result[resultSize] = B[i];
+                resultSize++;
+            }
+        }
+    }
+
+    std::cout << "Unique elements from A and B without repetitions: ";
+    for (int i = 0; i < resultSize; i++) {
+        std::cout << result[i] << " ";
+    }
+    std::cout << std::endl;
+
+    // Освобождаем выделенную динамическую память
+    delete[] result;
+}
+
+int main() {
+    int M, N;
+    std::cout << "Enter the size of array A: ";
+    std::cin >> M;
+    int A[M];
+    std::cout << "Enter elements of array A: ";
+    for (int i = 0; i < M; i++) {
+        std::cin >> A[i];
+    }
+
+    std::cout << "Enter the size of array B: ";
+    std::cin >> N;
+    int B[N];
+    std::cout << "Enter elements of array B: ";
+    for (int i = 0; i < N; i++) {
+        std::cin >> B[i];
+    }
+
+    findUniqueElements(A, M, B, N);
+
+    return 0;
+}
